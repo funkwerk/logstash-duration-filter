@@ -1,6 +1,6 @@
-# Logstash Plugin
+# Logstash Duration Filter
 
-[![Travis Build Status](https://travis-ci.org/logstash-plugins/logstash-filter-example.svg)](https://travis-ci.org/logstash-plugins/logstash-filter-example)
+[![Travis Build Status](https://travis-ci.org/funkwerk/logstash-duration-filter.svg)](https://travis-ci.org/funkwerk/logstash-duration-filter)
 
 This is a plugin for [Logstash](https://github.com/elastic/logstash).
 
