@@ -14,31 +14,31 @@ describe LogStash::Filters::Duration do
     end
 
     sample('iso' => "PT1H2M3S") do
-      expect(subject.get("duration")).to eq(3_723)
+      expect(subject.get("duration")).to eq(total_seconds(days=0, hours=1, minutes=2, seconds=3))
     end
 
     sample('iso' => "PT1H2M3S1000MS") do
-      expect(subject.get("duration")).to eq(3_723)
+      expect(subject.get("duration")).to eq(total_seconds(days=0, hours=1, minutes=2, seconds=3))
     end
 
     sample('iso' => "-PT1H2M3S") do
-      expect(subject.get("duration")).to eq(-3_723)
+      expect(subject.get("duration")).to eq(-total_seconds(days=0, hours=1, minutes=2, seconds=3))
     end
 
     sample('iso' => "P1D") do
-      expect(subject.get("duration")).to eq(86_400)
+      expect(subject.get("duration")).to eq(total_seconds(days=1))
     end
 
     sample('iso' => "P1DT2H3M4S") do
-      expect(subject.get("duration")).to eq(93_784)
+      expect(subject.get("duration")).to eq(total_seconds(days=1, hours=2, minutes=3, seconds=4))
     end
 
     sample('iso' => "P1M") do
-      expect(subject.get("duration")).to eq(0)
+      expect(subject.get("duration")).to eq(total_seconds())
     end
 
     sample('iso' => "PT2M1H3S") do
-      expect(subject.get("duration")).to eq(0)
+      expect(subject.get("duration")).to eq(total_seconds())
     end
   end
 end
