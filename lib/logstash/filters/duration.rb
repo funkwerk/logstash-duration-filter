@@ -41,7 +41,7 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
 
   private
   def valid(value)
-    value[/^(-)?(P([0-9]+D)+(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?$|P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)+$)/]
+    value[/^(-)?(P([0-9]+D)+(T([0-9]+H)?([0-9]+M)?([0-9]+S)?([0-9]+MS)?)?$|P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?([0-9]+MS)?)+$)/]
   end
 
 end # class LogStash::Filters::Duration
