@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.description     = "This gem is a Logstash plugin required to be installed on top of the Logstash core pipeline using $LS_HOME/bin/logstash-plugin install gemname. This gem is not a stand-alone program"
   s.authors = ["Funkwerk AG"]
   s.require_paths = ["lib"]
+  s.homepage = 'https://github.com/funkwerk/logstash-duration-filter/'
 
   # Files
   s.files = Dir['lib/**/*','spec/**/*','vendor/**/*','*.gemspec','*.md','CONTRIBUTORS','Gemfile','LICENSE','NOTICE.TXT']

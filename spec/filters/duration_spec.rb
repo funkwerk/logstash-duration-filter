@@ -7,14 +7,34 @@ describe LogStash::Filters::Duration do
     let(:config) do <<-CONFIG
       filter {
         duration {
-          iso => "P1DT2H3M4S"
+          iso => 'iso'
         }
       }
     CONFIG
     end
 
-    sample("iso" => "P1DT2H3M4S") do
+    sample('iso' => "PT1H2M3S") do
+      expect(subject.get("duration")).to eq(3_723)
+    end
+
+    sample('iso' => "-PT1H2M3S") do
+      expect(subject.get("duration")).to eq(-3_723)
+    end
+
+    sample('iso' => "P1D") do
+      expect(subject.get("duration")).to eq(86_400)
+    end
+
+    sample('iso' => "P1DT2H3M4S") do
       expect(subject.get("duration")).to eq(93_784)
+    end
+
+    sample('iso' => "P1M") do
+      expect(subject.get("duration")).to eq(0)
+    end
+
+    sample('iso' => "PT2M1H3S") do
+      expect(subject.get("duration")).to eq(0)
     end
   end
 end
