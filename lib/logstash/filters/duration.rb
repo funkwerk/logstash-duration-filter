@@ -6,7 +6,7 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
 
   config_name 'duration'
 
-  config :iso, validate: string, default: '', required: true
+  config :iso, :validate => :string, :default => '', :required => true
 
   public
   def register
@@ -34,7 +34,7 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
   end
 
   def match_pattern(value)
-    pattern = /^(?<negate>-)?P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)S)?((?<milliseconds>\d+)MS)?)?$/
+    pattern = /^(?<negate>-)?P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)(.\d+)?S)?((?<milliseconds>\d+)MS)?)?$/
 
     value.match pattern
   end
