@@ -8,13 +8,14 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
 
   config :iso, :validate => :string, :default => '', :required => true
 
-  public def register
+  public
+  def register
   end
 
-  public def filter(event)
+  public
+  def filter(event)
     return unless @iso
     event.set('duration', parse(event.get(@iso)))
-
     filter_matched(event)
   end
 
