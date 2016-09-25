@@ -29,12 +29,12 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
       match[:minutes].to_i,
       match[:seconds].to_i
     )
-    duration = -duration if value[/^-/]
+    duration = -duration if match[:negate] == '-'
     duration
   end
 
   def match_pattern(value)
-    pattern = /^P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)S)?((?<milliseconds>\d+)MS)?)?$/
+    pattern = /^(?<negate>-)?P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)S)?((?<milliseconds>\d+)MS)?)?$/
 
     value.match pattern
   end
