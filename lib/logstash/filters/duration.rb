@@ -12,7 +12,8 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
   end
 
   public def filter(event)
-    event.set('duration', parse(event.get(@iso))) if @iso
+    return unless @iso
+    event.set('duration', parse(event.get(@iso)))
 
     filter_matched(event)
   end
