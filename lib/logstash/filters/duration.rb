@@ -6,7 +6,7 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
 
   config_name 'duration'
 
-  config :iso, :validate => :string, :default => '', :required => true
+  config :iso, validate: string, default: '', required: true
 
   public
   def register
