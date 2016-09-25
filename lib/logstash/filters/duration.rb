@@ -34,7 +34,7 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
   end
 
   def match_pattern(value)
-    pattern = /^(?<negate>-)?P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)(.\d+)?S)?((?<milliseconds>\d+)MS)?)?$/
+    pattern = /^(?<negate>-)?P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)(.(?<milliseconds>\d+))?S)?)?$/
 
     value.match pattern
   end
