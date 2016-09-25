@@ -30,7 +30,7 @@ describe LogStash::Filters::Duration do
     end
 
     sample('iso' => 'PT1.2S') do
-      expect(subject.get('duration')).to eq(total_seconds(seconds=1))
+      expect(subject.get('duration')).to eq(total_seconds(seconds: 1))
     end
 
     sample('iso' => 'P1DT2H3M4S') do
