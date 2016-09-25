@@ -8,37 +8,31 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
 
   config :iso, :validate => :string, :default => '', :required => true
 
-  public
-  def register
+  public def register
   end
 
-  public
-  def filter(event)
-    if @iso
-      value = event.get(@iso)
-      if not valid(value)
-        return event.set('duration', 0)
-      end
-      days = value[/([0-9]+)D/, 1].to_i
-      hours = value[/([0-9]+)H/, 1].to_i
-      minutes = value[/([0-9]+)M/, 1].to_i
-      seconds = value[/([0-9]+)S/, 1].to_i
-      duration = total_seconds(days, hours, minutes, seconds)
-      if value[/^-/]
-        duration *= -1
-      end
-
-      event.set('duration', duration)
-    end
+  public def filter(event)
+    event.set('duration', parse(event.get(@iso))) if @iso
 
     filter_matched(event)
+  end
+
+  def parse(value)
+    return 0 unless valid?(value)
+    days = value[/([0-9]+)D/, 1].to_i
+    hours = value[/([0-9]+)H/, 1].to_i
+    minutes = value[/([0-9]+)M/, 1].to_i
+    seconds = value[/([0-9]+)S/, 1].to_i
+    duration = total_seconds(days, hours, minutes, seconds)
+    duration = -duration if value[/^-/]
+    duration
   end
 
   def total_seconds(days = 0, hours = 0, minutes = 0, seconds = 0)
     seconds + 60 * (minutes + 60 * (hours + 24 * days))
   end
 
-  def valid(value)
+  def valid?(value)
     value[/^(-)?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?([0-9]+MS)?)?$/]
   end
 end
