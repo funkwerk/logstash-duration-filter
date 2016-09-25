@@ -1,47 +1,45 @@
 # encoding: utf-8
-require "logstash/filters/base"
-require "logstash/namespace"
+require 'logstash/filters/base'
+require 'logstash/namespace'
 
 class LogStash::Filters::Duration < LogStash::Filters::Base
 
-  config_name "duration"
+  config_name 'duration'
 
-  config :iso, :validate => :string, :default => "", :required => true
+  config :iso, :validate => :string, :default => '', :required => true
 
   public
   def register
-  end # def register
+  end
 
   public
   def filter(event)
-    if @iso
-      value = event.get(@iso)
-      if not valid(value)
-        return event.set("duration", 0)
-      end
-      days = value[/([0-9]+)D/, 1].to_i
-      hours = value[/([0-9]+)H/, 1].to_i
-      minutes = value[/([0-9]+)M/, 1].to_i
-      seconds = value[/([0-9]+)S/, 1].to_i
-      duration = total_seconds(days, hours, minutes, seconds)
-      if value[/^-/]
-        duration *= -1
-      end
-
-      event.set("duration", duration)
-    end
-
+    return unless @iso
+    event.set('duration', parse(event.get(@iso)))
     filter_matched(event)
-  end # def filter
-
-  private
-  def total_seconds(days=0, hours=0, minutes=0, seconds=0)
-    seconds + 60 * (minutes + 60 * (hours + 24 * days))
-  end # def total_seconds
-
-  private
-  def valid(value)
-    value[/^(-)?(P([0-9]+D)+(T([0-9]+H)?([0-9]+M)?([0-9]+S)?([0-9]+MS)?)?$|P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?([0-9]+MS)?)+$)/]
   end
 
-end # class LogStash::Filters::Duration
+  def parse(value)
+    match = match_pattern value
+    return 0 if match.nil?
+
+    duration = total_seconds(
+      match[:days].to_i,
+      match[:hours].to_i,
+      match[:minutes].to_i,
+      match[:seconds].to_i
+    )
+    duration = -duration if match[:negate] == '-'
+    duration
+  end
+
+  def match_pattern(value)
+    pattern = /^(?<negate>-)?P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)(.(?<milliseconds>\d+))?S)?)?$/
+
+    value.match pattern
+  end
+
+  def total_seconds(days, hours, minutes, seconds)
+    seconds + 60 * (minutes + 60 * (hours + 24 * days))
+  end
+end

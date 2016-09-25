@@ -1,6 +1,11 @@
 # encoding: utf-8
 require "logstash/devutils/rspec/spec_helper"
 
-def total_seconds(days=0, hours=0, minutes=0, seconds=0)
-  seconds + 60 * (minutes + 60 * (hours + 24 * days))
-end # def total_seconds
+def total_seconds(duration = {})
+  duration[:days] ||= 0
+  duration[:hours] ||= 0
+  duration[:minutes] ||= 0
+  duration[:seconds] ||= 0
+
+  duration[:seconds] + 60 * (duration[:minutes] + 60 * (duration[:hours] + 24 * duration[:days]))
+end
