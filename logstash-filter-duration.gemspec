@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors = ['Funkwerk AG']
   s.require_paths = ['lib']
   s.homepage = 'https://github.com/funkwerk/logstash-duration-filter/'
-  s.files = Dir[%w(lib/**/* spec/**/* *.gemspec *.md Gemfile)]
+  s.files = Dir['lib/**/*', 'spec/**/*', '*.gemspec', '*.md', 'Gemfile']
   s.test_files = s.files.grep(%r{^(test|spec|features)/})
   s.metadata = { 'logstash_plugin' => 'true', 'logstash_group' => 'filter' }
   s.add_development_dependency 'logstash-devutils'
