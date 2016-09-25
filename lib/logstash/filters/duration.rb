@@ -20,21 +20,26 @@ class LogStash::Filters::Duration < LogStash::Filters::Base
   end
 
   def parse(value)
-    return 0 unless valid?(value)
-    days = value[/([0-9]+)D/, 1].to_i
-    hours = value[/([0-9]+)H/, 1].to_i
-    minutes = value[/([0-9]+)M/, 1].to_i
-    seconds = value[/([0-9]+)S/, 1].to_i
-    duration = total_seconds(days, hours, minutes, seconds)
+    match = match_pattern value
+    return 0 if match.nil?
+
+    duration = total_seconds(
+      match[:days].to_i,
+      match[:hours].to_i,
+      match[:minutes].to_i,
+      match[:seconds].to_i
+    )
     duration = -duration if value[/^-/]
     duration
   end
 
-  def total_seconds(days = 0, hours = 0, minutes = 0, seconds = 0)
-    seconds + 60 * (minutes + 60 * (hours + 24 * days))
+  def match_pattern(value)
+    pattern = /^P((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)S)?((?<milliseconds>\d+)MS)?)?$/
+
+    value.match pattern
   end
 
-  def valid?(value)
-    value[/^(-)?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?([0-9]+MS)?)?$/]
+  def total_seconds(days, hours, minutes, seconds)
+    seconds + 60 * (minutes + 60 * (hours + 24 * days))
   end
 end
